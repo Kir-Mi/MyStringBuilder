@@ -8,6 +8,11 @@ public class Main {
         builder.save();
         builder.append(" and bye");
         System.out.println(builder);
+        builder.save();
+        builder.append(" bye");
+        System.out.println(builder);
+        builder.undo();
+        System.out.println(builder);
         builder.undo();
         System.out.println(builder);
         builder.append(", world");

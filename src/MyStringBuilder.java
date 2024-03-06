@@ -1,16 +1,16 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MyStringBuilder {
     private List<Character> value;
-    private final List<List<Character>> snapshots;
-    private int snapshotCounter;
+    private final Deque<List<Character>> snapshotStack;
 
     public MyStringBuilder() {
         this.value = new ArrayList<>();
-        this.snapshots = new ArrayList<>();
-        this.snapshotCounter = -1;
+        this.snapshotStack = new ArrayDeque<>();
     }
 
     public MyStringBuilder(String str) {
@@ -18,8 +18,7 @@ public class MyStringBuilder {
         for (char c : str.toCharArray()) {
             value.add(c);
         }
-        this.snapshots = new ArrayList<>();
-        this.snapshotCounter = -1;
+        this.snapshotStack = new ArrayDeque<>();
     }
 
     public MyStringBuilder append(String str) {
@@ -35,17 +34,14 @@ public class MyStringBuilder {
     }
 
     public MyStringBuilder undo() {
-        if(snapshotCounter >= 0) {
-            value = snapshots.get(snapshotCounter);
-            snapshots.remove(snapshotCounter);
-            --snapshotCounter;
+        if(!snapshotStack.isEmpty()) {
+            value = snapshotStack.removeLast();
         }
         return this;
     }
 
     public void save() {
-        snapshots.add(new ArrayList<>(value));
-        ++snapshotCounter;
+        snapshotStack.addLast(new ArrayList<>(value));
     }
 
     public String toString() {
